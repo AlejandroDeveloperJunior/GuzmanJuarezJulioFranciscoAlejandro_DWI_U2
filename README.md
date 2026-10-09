@@ -164,12 +164,19 @@ Se configuró un archivo `.gitignore` profesional para excluir:
   * Ramas `feature/*` (Fases del ciclo web)
   * Tag de versión `v1.0.0`
 
+#### Evidencia 1: Historial y Estructura de Ramas Gitflow en la Terminal
+![Estructura Gitflow](screenshot_git_terminal.png)
+
+#### Evidencia 2: Sitio Web en Funcionamiento en Cloud Host con Certificado SSL
+![Sitio Web Cloud Host](screenshot_cloud_host.png)
+
 * **Despliegue en Cloud Host:**  
   * El proyecto cuenta con soporte de despliegue en múltiples plataformas Cloud Host:
     * **GitHub Pages (Cloud Host nativo de GitHub):** Desplegado automáticamente mediante GitHub Actions (`.github/workflows/deploy.yml`).
     * **Render / Railway / Koyeb:** Despliegue en la nube mediante `Dockerfile` (PHP 8.3 Apache) y especificación `render.yaml`.
-  * **Evidencias Gráficas:**  
-    Las capturas de pantalla de alta resolución que demuestran el funcionamiento del sitio en el Cloud Host y en el entorno local se encuentran integradas en el documento de reporte entregable (`.docx` y `.pdf`).
+  * **Documentos Entregables:**  
+    * `Caso_Practico_U2_DWI_GuzmanJuarezJulioFranciscoAlejandro.docx`
+    * `Caso_Practico_U2_DWI_GuzmanJuarezJulioFranciscoAlejandro.pdf`
 
 ---
 
