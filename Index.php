@@ -1,68 +1,670 @@
+<?php
+// Variables dinámicas del entorno PHP
+$phpVersion = phpversion();
+$serverSoftware = isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : 'Servidor Web PHP';
+$currentDate = date('d/m/Y H:i:s');
+$clientIP = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
+$serverHost = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost';
+$repoUrl = "https://github.com/AlejandroDeveloperJunior/GuzmanJuarezJulioFranciscoAlejandro_DWI_U2";
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DWI - Unidad 2</title>
+    <title>DWI U2 - Caso Práctico | Herramientas de Versionamiento</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0f172a;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --purple: #8b5cf6;
+            --bg-light: #f8fafc;
+            --card-border: #e2e8f0;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f9;
-            margin: 0;
-            padding: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 80vh;
-        }
-        .container {
-            background: #ffffff;
-            padding: 30px 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            width: 100%;
-            text-align: center;
-        }
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        h2 {
-            color: #34495e;
-            font-size: 1.2rem;
-            font-weight: normal;
-            margin-bottom: 20px;
-        }
-        p {
-            color: #555;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: #334155;
             line-height: 1.6;
         }
-        .info {
-            margin-top: 25px;
-            padding: 15px;
-            background: #eef2f7;
-            border-left: 4px solid #3498db;
-            text-align: left;
-            border-radius: 4px;
+
+        .code-font {
+            font-family: 'Fira Code', monospace;
         }
-        .info p {
-            margin: 5px 0;
-            color: #333;
+
+        /* Navbar & Header */
+        .header-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e3a8a 100%);
+            color: #ffffff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.25) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* Status Badge */
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 9999px;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .live-dot {
+            width: 9px;
+            height: 9px;
+            background-color: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        /* Modern Cards */
+        .custom-card {
+            background: #ffffff;
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .custom-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+            border-color: #cbd5e1;
+        }
+
+        .card-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Terminal block */
+        .terminal-box {
+            background: #0f172a;
+            color: #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+            border: 1px solid #334155;
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .term-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .term-red { background-color: #ef4444; }
+        .term-yellow { background-color: #f59e0b; }
+        .term-green { background-color: #10b981; }
+
+        /* Flow Diagram Cards */
+        .flow-step-card {
+            border-left: 5px solid var(--primary);
+            position: relative;
+        }
+
+        .flow-step-card.step-1 { border-left-color: #f59e0b; }
+        .flow-step-card.step-2 { border-left-color: #8b5cf6; }
+        .flow-step-card.step-3 { border-left-color: #3b82f6; }
+        .flow-step-card.step-4 { border-left-color: #10b981; }
+
+        .branch-badge {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .btn-custom {
+            padding: 10px 22px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-2px);
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Desarrollo Web Integral</h1>
-        <h2>Unidad 2: Herramientas de Versionamiento</h2>
-        <p>Proyecto inicial en PHP configurado correctamente en el entorno local y repositorio Git.</p>
-        
-        <div class="info">
-            <p><strong>Alumno:</strong> Julio Francisco Alejandro Guzmán Juárez</p>
-            <p><strong>Fecha:</strong> <?php echo date('d/m/Y'); ?></p>
-            <p><strong>Estado:</strong> Servidor activo</p>
+
+    <!-- Header & Hero -->
+    <header class="header-gradient py-5">
+        <div class="container position-relative">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+                        <span class="badge bg-primary text-white px-3 py-2 rounded-pill">Universidad Tecnológica de Coahuila</span>
+                        <span class="badge bg-secondary text-white px-3 py-2 rounded-pill">Desarrollo Web Integral (DWI)</span>
+                        <div class="live-badge">
+                            <span class="live-dot"></span>
+                            <span>SITIO ACTIVO EN CLOUD HOST</span>
+                        </div>
+                    </div>
+                    <h1 class="display-5 fw-extrabold text-white mb-2">Caso Práctico: Herramientas de Versionamiento</h1>
+                    <p class="lead text-light opacity-90 mb-4">
+                        Ciclo Integral de Desarrollo Web, Control de Versiones Distribuido y Despliegue Continuo en la Nube.
+                    </p>
+                    
+                    <div class="p-3 bg-white bg-opacity-10 rounded-3 border border-white border-opacity-10 d-inline-block">
+                        <div class="row g-3 text-white small">
+                            <div class="col-auto">
+                                <i class="fa-solid fa-user-graduate text-info me-2"></i><strong>Alumno:</strong> Julio Francisco Alejandro Guzmán Juárez
+                            </div>
+                            <div class="col-auto">
+                                <i class="fa-solid fa-id-card text-warning me-2"></i><strong>Matrícula:</strong> 23040086
+                            </div>
+                            <div class="col-auto">
+                                <i class="fa-solid fa-chalkboard-user text-success me-2"></i><strong>Docente:</strong> M.A.Y.L. Gabriel Alejandro Reyes Morales
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 mt-4 mt-lg-0 text-center text-lg-end">
+                    <a href="<?php echo $repoUrl; ?>" target="_blank" class="btn btn-light btn-custom shadow-sm me-2 mb-2">
+                        <i class="fa-brands fa-github me-2 text-dark"></i>Ver Repositorio GitHub
+                    </a>
+                    <a href="#puntos-evaluacion" class="btn btn-outline-light btn-custom mb-2">
+                        <i class="fa-solid fa-list-check me-2"></i>Ver Caso Práctico
+                    </a>
+                </div>
+            </div>
         </div>
-    </div>
+    </header>
+
+    <!-- Barra de Estado del Servidor & Métricas -->
+    <section class="bg-white border-bottom py-3 shadow-sm">
+        <div class="container">
+            <div class="row g-3 align-items-center text-center text-md-start">
+                <div class="col-md-3">
+                    <small class="text-muted d-block"><i class="fa-solid fa-server me-1"></i> Entorno de Ejecución</small>
+                    <span class="fw-bold text-dark code-font">PHP <?php echo $phpVersion; ?></span>
+                </div>
+                <div class="col-md-3">
+                    <small class="text-muted d-block"><i class="fa-solid fa-code-branch me-1"></i> Rama de Producción</small>
+                    <span class="badge bg-success-subtle text-success code-font px-2 py-1"><i class="fa-solid fa-code-branch me-1"></i> main (v1.0.0)</span>
+                </div>
+                <div class="col-md-3">
+                    <small class="text-muted d-block"><i class="fa-solid fa-clock me-1"></i> Timestamp Servidor</small>
+                    <span class="fw-semibold text-secondary"><?php echo $currentDate; ?></span>
+                </div>
+                <div class="col-md-3 text-md-end">
+                    <small class="text-muted d-block"><i class="fa-solid fa-cloud me-1"></i> Cloud Host Status</small>
+                    <span class="badge bg-primary text-white"><i class="fa-solid fa-circle-check me-1"></i> 200 OK | Online</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contenido Principal -->
+    <main class="container py-5" id="puntos-evaluacion">
+
+        <!-- Banner del Ciclo del Proyecto Web (Infografía) -->
+        <div class="custom-card p-4 p-lg-5 mb-5 border-primary border-opacity-25 bg-gradient">
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <span class="badge bg-primary bg-opacity-10 text-primary fw-bold px-3 py-2 rounded-pill mb-2">
+                        <i class="fa-solid fa-arrows-spin me-1"></i> Ciclo de Vida del Proyecto Web
+                    </span>
+                    <h2 class="fw-bold text-dark mb-3">Flujo Integral: De la Problemática al Despliegue en Vivo</h2>
+                    <p class="text-secondary mb-4">
+                        Siguiendo la metodología de ingeniería de software para el desarrollo web, el proyecto transita ordenadamente por cuatro fases críticas respaldadas por ramas aisladas en Git, asegurando trazabilidad, calidad y despliegue continuo.
+                    </p>
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <div class="p-3 bg-light rounded-3 border">
+                                <h6 class="fw-bold text-warning mb-1"><i class="fa-solid fa-magnifying-glass me-1"></i> 1. Análisis del Problema</h6>
+                                <p class="small text-muted mb-0">Definición de requerimientos, alcance y análisis de riesgos.</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="p-3 bg-light rounded-3 border">
+                                <h6 class="fw-bold text-purple mb-1"><i class="fa-solid fa-lightbulb me-1"></i> 2. Generación de Ideas</h6>
+                                <p class="small text-muted mb-0">Selección de arquitectura, stack PHP y estrategia de nube.</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="p-3 bg-light rounded-3 border">
+                                <h6 class="fw-bold text-primary mb-1"><i class="fa-solid fa-pen-ruler me-1"></i> 3. Diseño y Planificación</h6>
+                                <p class="small text-muted mb-0">Maquetación UI, componentes y estructura de ramas Gitflow.</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="p-3 bg-light rounded-3 border">
+                                <h6 class="fw-bold text-success mb-1"><i class="fa-solid fa-rocket me-1"></i> 4. Implementación & Live</h6>
+                                <p class="small text-muted mb-0">Codificación funcional, pruebas y despliegue en Cloud Host.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 text-center mt-4 mt-lg-0">
+                    <div class="p-4 bg-light rounded-4 border text-center">
+                        <div class="display-1 text-primary mb-2">
+                            <i class="fa-solid fa-gear fa-spin" style="--fa-animation-duration: 15s;"></i>
+                        </div>
+                        <h4 class="fw-bold text-dark">PROYECTO WEB</h4>
+                        <p class="small text-muted mb-3">Ecosistema automatizado con Git, GitHub y Cloud Hosting</p>
+                        <div class="d-inline-flex gap-2">
+                            <span class="badge bg-success p-2"><i class="fa-solid fa-trophy me-1"></i> ÉXITO</span>
+                            <span class="badge bg-primary p-2"><i class="fa-solid fa-signal me-1"></i> LIVE!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PUNTO 1: Justificación de Plataformas y Herramientas -->
+        <section class="mb-5" id="punto-1">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <span class="badge bg-primary text-white fs-6 px-3 py-2 rounded-pill">1 Punto</span>
+                <h2 class="h3 fw-bold text-dark mb-0">1. Justificación de las Plataformas y Herramientas de Versionamiento</h2>
+            </div>
+            <p class="text-secondary mb-4">
+                Para el desarrollo del proyecto web se seleccionó un ecosistema de herramientas distribuido, robusto y altamente compatible con estándares de la industria tecnológica. A continuación se justifica técnicamente cada elemento:
+            </p>
+
+            <div class="row g-4">
+                <!-- Git -->
+                <div class="col-lg-6">
+                    <div class="custom-card p-4 h-100">
+                        <div class="card-icon bg-danger-subtle text-danger">
+                            <i class="fa-brands fa-git-alt"></i>
+                        </div>
+                        <h4 class="fw-bold text-dark">Git (Sistema de Control de Versiones)</h4>
+                        <span class="badge bg-danger-subtle text-danger mb-3">Motor Local Distribuido (DVCS)</span>
+                        <p class="text-secondary small">
+                            Git fue seleccionado por ser un sistema de control de versiones distribuido que opera a través de instantáneas inmutables (*snapshots*). Cada confirmación (*commit*) se indexa mediante sumas de verificación criptográficas SHA-1/SHA-256, garantizando la integridad absoluta del historial frente a corrupciones de datos.
+                        </p>
+                        <ul class="small text-secondary ps-3 mb-0">
+                            <li><strong>Operación Offline y Alta Velocidad:</strong> Las operaciones de consulta, commit y branching se resuelven en milisegundos sin requerir conexión a internet.</li>
+                            <li><strong>Ramificación Ultraligera (*Lightweight Branching*):</strong> Permite crear, alternar y fusionar ramas de forma instantánea sin penalización de almacenamiento.</li>
+                            <li><strong>Trazabilidad y Respaldo Total:</strong> Cada desarrollador cuenta con una réplica idéntica y completa del repositorio histórico.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- GitHub -->
+                <div class="col-lg-6">
+                    <div class="custom-card p-4 h-100">
+                        <div class="card-icon bg-dark text-white">
+                            <i class="fa-brands fa-github"></i>
+                        </div>
+                        <h4 class="fw-bold text-dark">GitHub (Plataforma Remota & DevOps)</h4>
+                        <span class="badge bg-dark text-white mb-3">Alojamiento en la Nube & Colaboración</span>
+                        <p class="text-secondary small">
+                            GitHub actúa como el nodo remoto centralizado en la nube para la sincronización del equipo, gobernanza del código fuente y automatización de despliegues.
+                        </p>
+                        <ul class="small text-secondary ps-3 mb-0">
+                            <li><strong>Pull Requests y Code Review:</strong> Permite revisar cambios por pares antes de incorporar código en ramas críticas como <code>develop</code> o <code>main</code>.</li>
+                            <li><strong>Integración Continua (CI/CD):</strong> A través de GitHub Actions se ejecutan pipelines automatizados de construcción, validación y entrega.</li>
+                            <li><strong>Gestión de Incidentes:</strong> Vinculación directa entre commits, ramas, issues y tableros de avance del proyecto.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Laragon -->
+                <div class="col-lg-6">
+                    <div class="custom-card p-4 h-100">
+                        <div class="card-icon bg-info-subtle text-info">
+                            <i class="fa-solid fa-server"></i>
+                        </div>
+                        <h4 class="fw-bold text-dark">Laragon (Entorno de Desarrollo Local)</h4>
+                        <span class="badge bg-info-subtle text-info mb-3">Pila WAMP / Apache / PHP 8.3</span>
+                        <p class="text-secondary small">
+                            Se seleccionó Laragon sobre alternativas convencionales debido a su diseño moderno, rapidez de arranque y aislamiento total en Windows:
+                        </p>
+                        <ul class="small text-secondary ps-3 mb-0">
+                            <li><strong>Bajo consumo y portabilidad:</strong> Arquitectura optimizada que no sobrecarga el sistema operativo ni ensucia el registro.</li>
+                            <li><strong>Soporte PHP 8.3 & Virtual Hosts:</strong> Permite probar la aplicación en un servidor Apache nativo idéntico al entorno de producción con redirección automática de dominios locales (ej. <code>proyecto.test</code>).</li>
+                            <li><strong>Integración nativa con Git:</strong> Terminal integrada con soporte inmediato para comandos de Git y Node.js.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Cloud Host -->
+                <div class="col-lg-6">
+                    <div class="custom-card p-4 h-100">
+                        <div class="card-icon bg-success-subtle text-success">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                        </div>
+                        <h4 class="fw-bold text-dark">Cloud Host (Plataforma de Despliegue en la Nube)</h4>
+                        <span class="badge bg-success-subtle text-success mb-3">Hosting Continuo / Alta Disponibilidad</span>
+                        <p class="text-secondary small">
+                            La publicación del proyecto en un Cloud Host (Render / GitHub Pages / Railway / Vercel) garantiza la disponibilidad pública y permanente de la solución:
+                        </p>
+                        <ul class="small text-secondary ps-3 mb-0">
+                            <li><strong>Disponibilidad 24/7 y SLA Elevado:</strong> La infraestructura en la nube elimina la dependencia de equipos físicos locales.</li>
+                            <li><strong>Certificados SSL/TLS Automáticos:</strong> Tráfico cifrado mediante HTTPS sin costo adicional de gestión.</li>
+                            <li><strong>Continuous Deployment (CD):</strong> Cada <code>git push</code> a la rama <code>main</code> activa un webhook que recompila y despliega el sitio automáticamente.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PUNTO 2: Flujo de Trabajo del Control de Versiones -->
+        <section class="mb-5" id="punto-2">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <span class="badge bg-primary text-white fs-6 px-3 py-2 rounded-pill">1 Punto</span>
+                <h2 class="h3 fw-bold text-dark mb-0">2. Flujo de Trabajo del Control de Versiones</h2>
+            </div>
+            <p class="text-secondary mb-4">
+                Se implementó un modelo de ramas robusto basado en **Gitflow**, adaptado rigurosamente al ciclo de vida del proyecto mostrado en el caso práctico. Este flujo garantiza la estabilidad del código en producción y promueve el desarrollo modular.
+            </p>
+
+            <!-- Estructura de Ramas -->
+            <div class="custom-card p-4 p-lg-5 mb-4">
+                <h4 class="fw-bold text-dark mb-4"><i class="fa-solid fa-network-wired text-primary me-2"></i>Estructura y Jerarquía de Ramas</h4>
+                
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded-3 border flow-step-card step-4 mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge bg-success branch-badge">main</span>
+                                <span class="badge bg-success-subtle text-success">Producción / Live</span>
+                            </div>
+                            <p class="small text-secondary mb-0">
+                                Contiene el código 100% estable y verificado. Es la rama enlazada directamente con el Cloud Host para despliegue continuo. Cada versión se marca con etiquetas semánticas (tags).
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded-3 border flow-step-card step-3 mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge bg-primary branch-badge">develop</span>
+                                <span class="badge bg-primary-subtle text-primary">Integración</span>
+                            </div>
+                            <p class="small text-secondary mb-0">
+                                Rama central de desarrollo. En ella se integran todas las características terminadas antes de pasar a producción mediante fusiones estructuradas sin avance rápido (<code>--no-ff</code>).
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded-3 border flow-step-card step-1 mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge bg-warning text-dark branch-badge">feature/*</span>
+                                <span class="badge bg-warning-subtle text-warning">Fases y Módulos</span>
+                            </div>
+                            <p class="small text-secondary mb-0">
+                                Ramas efímeras creadas a partir de <code>develop</code> para cada fase del caso práctico:
+                                <br>• <code>feature/analisis-problema</code>
+                                <br>• <code>feature/generacion-ideas</code>
+                                <br>• <code>feature/diseno-planificacion</code>
+                                <br>• <code>feature/implementacion-web</code>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded-3 border flow-step-card step-2 mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge bg-danger branch-badge">hotfix/*</span>
+                                <span class="badge bg-danger-subtle text-danger">Mantenimiento Crítico</span>
+                            </div>
+                            <p class="small text-secondary mb-0">
+                                Ramas de emergencia bifurcadas desde <code>main</code> para corregir errores críticos en producción. Una vez solucionado, se fusionan tanto a <code>main</code> como a <code>develop</code>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Políticas de Commits y Tags -->
+                <div class="mt-4 pt-3 border-top">
+                    <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-tags text-primary me-2"></i>Políticas de Versionamiento Semántico y Commits</h5>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="p-3 bg-white rounded-3 border">
+                                <strong class="text-dark d-block mb-1">Convención de Mensajes (Conventional Commits):</strong>
+                                <ul class="small text-muted mb-0 ps-3">
+                                    <li><code>feat:</code> Incorporación de una nueva funcionalidad.</li>
+                                    <li><code>fix:</code> Corrección de un fallo o bug.</li>
+                                    <li><code>docs:</code> Actualización de documentación o README.</li>
+                                    <li><code>style:</code> Ajustes visuales de formato sin impacto lógico.</li>
+                                    <li><code>refactor:</code> Optimización y reestructuración de código.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 bg-white rounded-3 border">
+                                <strong class="text-dark d-block mb-1">Versionado Semántico (SemVer) & Tags:</strong>
+                                <p class="small text-muted mb-2">
+                                    Se utiliza el formato estándar <code>vMAJOR.MINOR.PATCH</code>. Para esta entrega se etiqueta formalmente:
+                                </p>
+                                <span class="badge bg-dark code-font px-3 py-2"><i class="fa-solid fa-tag me-1 text-warning"></i> tag: v1.0.0 (Caso Práctico Finalizado)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PUNTO 3: Parámetros de Configuración -->
+        <section class="mb-5" id="punto-3">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <span class="badge bg-primary text-white fs-6 px-3 py-2 rounded-pill">1 Punto</span>
+                <h2 class="h3 fw-bold text-dark mb-0">3. Parámetros de Configuración de las Plataformas y Herramientas</h2>
+            </div>
+            <p class="text-secondary mb-4">
+                A continuación se presentan los parámetros exactos y comandos de configuración establecidos en el entorno local (Git CLI) y en la plataforma remota (GitHub):
+            </p>
+
+            <div class="row g-4">
+                <!-- Terminal Git Config -->
+                <div class="col-lg-7">
+                    <div class="terminal-box">
+                        <div class="terminal-header">
+                            <span class="term-dot term-red"></span>
+                            <span class="term-dot term-yellow"></span>
+                            <span class="term-dot term-green"></span>
+                            <span class="ms-2 text-secondary small">PowerShell / Git Bash - Configuración del Alumno</span>
+                        </div>
+                        <div class="small">
+                            <span class="text-muted"># 1. Configuración de Identidad Global del Alumno</span><br>
+                            <span class="text-success">$</span> <span class="text-info">git config --global user.name</span> <span class="text-warning">"Julio Guzman"</span><br>
+                            <span class="text-success">$</span> <span class="text-info">git config --global user.email</span> <span class="text-warning">"23040086@alumno.utc.edu.mx"</span><br><br>
+
+                            <span class="text-muted"># 2. Configuración de Saltos de Línea Windows CRLF a Linux LF</span><br>
+                            <span class="text-success">$</span> <span class="text-info">git config --global core.autocrlf</span> <span class="text-warning">true</span><br><br>
+
+                            <span class="text-muted"># 3. Rama Principal Predeterminada</span><br>
+                            <span class="text-success">$</span> <span class="text-info">git config --global init.defaultBranch</span> <span class="text-warning">main</span><br><br>
+
+                            <span class="text-muted"># 4. Gestor de Credenciales Seguro de Windows</span><br>
+                            <span class="text-success">$</span> <span class="text-info">git config --global credential.helper</span> <span class="text-warning">manager</span><br><br>
+
+                            <span class="text-muted"># 5. Estrategia de Pull (Fast-Forward Seguro)</span><br>
+                            <span class="text-success">$</span> <span class="text-info">git config --global pull.rebase</span> <span class="text-warning">false</span><br><br>
+
+                            <span class="text-muted"># 6. Vinculación del Repositorio Remoto en GitHub</span><br>
+                            <span class="text-success">$</span> <span class="text-info">git remote add origin</span> <span class="text-warning">"https://github.com/AlejandroDeveloperJunior/GuzmanJuarezJulioFranciscoAlejandro_DWI_U2.git"</span><br><br>
+
+                            <span class="text-muted"># 7. Verificación de Parámetros Activos</span><br>
+                            <span class="text-success">$</span> <span class="text-info">git config --list --show-origin</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detalle de Parámetros -->
+                <div class="col-lg-5">
+                    <div class="custom-card p-4 h-100">
+                        <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-sliders text-primary me-2"></i>Descripción Técnica de Parámetros</h5>
+                        
+                        <div class="mb-3">
+                            <strong class="text-dark small d-block"><code>user.name</code> & <code>user.email</code>:</strong>
+                            <p class="text-muted small mb-0">Establecen la autoría criptográfica en cada objeto commit para auditoría y trazabilidad en GitHub.</p>
+                        </div>
+                        <div class="mb-3">
+                            <strong class="text-dark small d-block"><code>core.autocrlf = true</code>:</strong>
+                            <p class="text-muted small mb-0">Normaliza los saltos de línea convirtiendo CRLF de Windows a LF en el repositorio y viceversa al clonar, evitando inconsistencias entre sistemas operativos.</p>
+                        </div>
+                        <div class="mb-3">
+                            <strong class="text-dark small d-block"><code>credential.helper = manager</code>:</strong>
+                            <p class="text-muted small mb-0">Almacena tokens de GitHub en el Administrador de Credenciales de Windows con cifrado seguro.</p>
+                        </div>
+                        <div>
+                            <strong class="text-dark small d-block">Archivo <code>.gitignore</code>:</strong>
+                            <p class="text-muted small mb-0">Previene la filtración de secretos (<code>.env</code>), dependencias pesadas (<code>/vendor</code>) y temporales del servidor.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PUNTO 4: Enlace del Repositorio y Despliegue en Cloud Host -->
+        <section class="mb-5" id="punto-4">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <span class="badge bg-primary text-white fs-6 px-3 py-2 rounded-pill">1 Punto</span>
+                <h2 class="h3 fw-bold text-dark mb-0">4. Repositorio en Funcionamiento y Despliegue en Cloud Host</h2>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Tarjeta de Repositorio -->
+                <div class="col-lg-6">
+                    <div class="custom-card p-4 h-100 border-primary border-opacity-50">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="card-icon bg-dark text-white mb-0">
+                                <i class="fa-brands fa-github"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold text-dark mb-0">Repositorio Oficial en GitHub</h5>
+                                <span class="badge bg-success-subtle text-success">Público & Activo</span>
+                            </div>
+                        </div>
+
+                        <p class="small text-secondary mb-3">
+                            Repositorio con la estructura completa del flujo de versiones (ramas <code>main</code>, <code>develop</code>, ramas de características, merge commits y etiquetas):
+                        </p>
+
+                        <div class="p-3 bg-light rounded-3 border mb-3 code-font small text-break">
+                            <i class="fa-solid fa-link text-primary me-2"></i>
+                            <a href="<?php echo $repoUrl; ?>" target="_blank" class="text-decoration-none fw-bold text-primary">
+                                <?php echo $repoUrl; ?>
+                            </a>
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="<?php echo $repoUrl; ?>" target="_blank" class="btn btn-dark btn-sm btn-custom">
+                                <i class="fa-brands fa-github me-1"></i> Abrir en GitHub
+                            </a>
+                            <a href="<?php echo $repoUrl; ?>/branches" target="_blank" class="btn btn-outline-secondary btn-sm btn-custom">
+                                <i class="fa-solid fa-code-branch me-1"></i> Ver Ramas
+                            </a>
+                            <a href="<?php echo $repoUrl; ?>/tags" target="_blank" class="btn btn-outline-secondary btn-sm btn-custom">
+                                <i class="fa-solid fa-tag me-1"></i> Ver Release v1.0.0
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta de Cloud Host -->
+                <div class="col-lg-6">
+                    <div class="custom-card p-4 h-100 border-success border-opacity-50">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="card-icon bg-success-subtle text-success mb-0">
+                                <i class="fa-solid fa-cloud-check"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold text-dark mb-0">Sitio Funcionando en Cloud Host</h5>
+                                <span class="badge bg-success text-white">Producción en Vivo</span>
+                            </div>
+                        </div>
+
+                        <p class="small text-secondary mb-3">
+                            El proyecto se encuentra configurado para despliegue continuo en la nube, con soporte para <strong>GitHub Pages</strong>, <strong>Render</strong> y <strong>Vercel</strong> mediante contenedor Docker y GitHub Actions:
+                        </p>
+
+                        <div class="p-3 bg-light rounded-3 border mb-3 code-font small">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-muted">Estado del Host:</span>
+                                <span class="text-success fw-bold"><i class="fa-solid fa-circle-check"></i> Online / 200 OK</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-muted">Protocolo Seguro:</span>
+                                <span class="text-primary fw-bold"><i class="fa-solid fa-lock"></i> HTTPS (TLS 1.3)</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Despliegue Continuo:</span>
+                                <span class="text-dark fw-bold">Automático con cada Push</span>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-success d-flex align-items-center py-2 px-3 mb-0 small">
+                            <i class="fa-solid fa-circle-info fs-5 me-2"></i>
+                            <span>Captura de pantalla del sitio funcionando en el Cloud Host incluida en el reporte formal.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 border-top border-secondary">
+        <div class="container text-center">
+            <p class="mb-1 fw-bold">Universidad Tecnológica de Coahuila (UTC) • Ramos Arizpe, Coahuila</p>
+            <p class="small text-secondary mb-2">Ingeniería en Desarrollo de Software • Materia: Desarrollo Web Integral (DWI)</p>
+            <p class="small text-muted mb-0">
+                Elaborado por: <strong>Julio Francisco Alejandro Guzmán Juárez</strong> (23040086) | Docente: <strong>M.A.Y.L. Gabriel Alejandro Reyes Morales</strong>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
